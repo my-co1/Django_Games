@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8"><title>رقعة الشطرنج</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; }
+        .board { display: grid; grid-template-columns: repeat(8, 55px); width: 440px; margin: 20px auto; border: 3px solid #333; }
+        .cell { width: 55px; height: 55px; font-size: 32px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .light { background-color: #f0d9b5; }
+        .dark { background-color: #b58863; }
+        .selected { background-color: #7fa650 !important; }
+    </style>
+</head>
+<body>
+    <h2>لعبة رقعة الشطرنج ♟️</h2>
+    <p>اضغط على القطعة لاختيارها، ثم اضغط على المربع المراد نقلها إليه.</p>
+    <form method="POST">{% csrf_token %}
+        <div class="board">
+            {% for row in board %}
+                {% with r_idx=forloop.counter0 %}
+                    {% for cell in row %}
+                        {% with c_idx=forloop.counter0 %}
+                            <button type="submit" name="row" value="{{ r_idx }}" onclick="this.form.col.value='{{ c_idx }}'" 
+                                    class="cell {% if r_idx|add:c_idx|divisibleby:2 %}light{% else %}dark{% endif %} {% if selected.0 == r_idx and selected.1 == c_idx %}selected{% endif %}">
+                                {{ cell }}
+                            </button>
+                        {% endwith %}
+                    {% endfor %}
+                {% endwith %}
+            {% endfor %}
+        </div>
+        <input type="hidden" name="col" id="col">
+    </form>
+    <a href="{% url 'chess' %}?reset=1">إعادة ترتيب الرقعة</a> | <a href="{% url 'home' %}">الرئيسية</a>
+</body>
+</html>

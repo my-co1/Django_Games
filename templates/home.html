@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>بوابة الألعاب</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; text-align: center; padding-top: 50px; }
+        .btn { display: inline-block; margin: 15px; padding: 15px 30px; font-size: 18px; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; }
+        .b1 { background: #343a40; } .b2 { background: #007bff; } .b3 { background: #28a745; }
+    </style>
+</head>
+<body>
+    <h1>مرحباً بك في منصة ألعاب Django 🕹️</h1>
+    <p>اختر اللعبة التي تريد خوض التحدي فيها:</p>
+    <div>
+        <a href="{% url 'chess' %}" class="btn b1">♟️ لعبة الشطرنج</a>
+        <a href="{% url 'tictactoe' %}" class="btn b2">❌ لعبة إكس أو (X - O)</a>
+        <a href="{% url 'memory' %}" class="btn b3">🃏 لعبة مطابقة الذاكرة</a>
+    </div>
+</body>
+</html>
