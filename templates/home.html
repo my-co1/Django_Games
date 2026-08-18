@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>منصة ألعاب Django - Database Edition</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>منصة الألعاب وقاعدة البيانات 🎮</h1>
+        <p>مرحباً بك يا <b>{{ user_name|default:"زائرنا الكريم"|capfirst }}</b></p>
+        <span class="status-badge">تاريخ اليوم: {{ today|date:"Y-m-d | h:i A" }}</span>
+
+        <h2>الألعاب المتاحة من قاعدة البيانات ({{ games|length }})</h2>
+        {% for game in games %}
+            <div style="border-bottom: 1px solid #eee; padding: 12px 0;">
+                <h3>{{ game.title|title }} ({{ game.category|upper }})</h3>
+                <p>{{ game.description|truncatewords:8 }}</p>
+                {% if forloop.counter == 1 %}
+                    <a href="{% url 'chess' %}" class="btn btn-dark">دخول لعبة الشطرنج ♟️</a>
+                {% elif forloop.counter == 2 %}
+                    <a href="{% url 'tictactoe' %}" class="btn btn-main">دخول لعبة إكس أو ❌</a>
+                {% else %}
+                    <a href="{% url 'memory' %}" class="btn btn-secondary">دخول لعبة الذاكرة 🃏</a>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>لا توجد ألعاب مسجلة في قاعدة البيانات حالياً.</p>
+        {% endfor %}
+
+        <h2 style="margin-top: 30px;">سجل آخر النتائج المسجلة بالداتابيز 🏆</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background: #f1f2f6; border-bottom: 2px solid #ccc;">
+                    <th style="padding: 8px;">اللاعب</th>
+                    <th style="padding: 8px;">اللعبة</th>
+                    <th style="padding: 8px;">النتيجة</th>
+                    <th style="padding: 8px;">التوقيت</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for score in recent_scores %}
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 8px;"><b>{{ score.player_name }}</b></td>
+                        <td style="padding: 8px;">{{ score.game_name }}</td>
+                        <td style="padding: 8px;">{{ score.result }}</td>
+                        <td style="padding: 8px;">{{ score.played_at|date:"h:i A" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="4" style="padding: 10px;">لا توجد نتائج مسجلة بعد، ابدأ اللعب الآن!</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="nav-links" style="margin-top: 25px;">
+            <a href="/admin" target="_blank">دخول لوحة تحكم الإدارة (Django Admin) ⚙️</a>
+        </div>
+    </div>
+</body>
+</html>

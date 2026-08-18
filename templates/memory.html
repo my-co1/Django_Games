@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8"><title>مطابقة البطاقات</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>لعبة مطابقة بطاقات الذاكرة 🃏</h2>
+        
+        {% if won %}
+            <div class="status-badge" style="background: #eafaf1; color: #27ae60;">
+                🎉 أحسنت! نجحت في مطابقة جميع البطاقات بالكامل!
+            </div>
+        {% else %}
+            <div class="status-badge">اكشف البطاقات وابحث عن الأزواج المتطابقة</div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="memory-grid">
+                {% for card in cards %}
+                    {% if forloop.counter0 in matched or forloop.counter0 in flipped %}
+                        <button class="memory-card open" type="button">{{ card }}</button>
+                    {% else %}
+                        <button class="memory-card" type="submit" name="card_idx" value="{{ forloop.counter0 }}">❓</button>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </form>
+
+        <div class="nav-links">
+            <a href="{% url 'memory' %}?reset=1">إعادة توزيع البطاقات</a> |
+            <a href="{% url 'home' %}">العودة للرئيسية</a>
+        </div>
+    </div>
+</body>
+</html>

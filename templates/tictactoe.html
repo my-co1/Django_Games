@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8"><title>إكس أو</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>لعبة X - O ضد السيرفر ❌⭕</h2>
+        <div class="status-badge">{{ status }}</div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="tictactoe-grid">
+                {% for val in board %}
+                    <button class="tictactoe-cell" type="submit" name="cell" value="{{ forloop.counter0 }}" {% if val or game_over %}disabled{% endif %}>
+                        {{ val }}
+                    </button>
+                {% endfor %}
+            </div>
+        </form>
+
+        <div class="nav-links">
+            <a href="{% url 'tictactoe' %}?reset=1">بدء جولة جديدة</a> |
+            <a href="{% url 'home' %}">العودة للرئيسية</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8"><title>رقعة الشطرنج</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>لعبة رقعة الشطرنج ♟️</h2>
+        <p class="status-badge">اضغط على القطعة لتحديدها ثم اضغط على المربع الهدف</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="chess-board">
+                {% for row in board %}
+                    {% with r=forloop.counter0 %}
+                        {% for cell in row %}
+                            {% with c=forloop.counter0 %}
+                                <button type="submit" name="pos" value="{{ r }},{{ c }}" 
+                                        class="chess-cell {% if r|add:c|divisibleby:2 %}cell-light{% else %}cell-dark{% endif %} {% if selected.0 == r and selected.1 == c %}cell-selected{% endif %}">
+                                    {{ cell }}
+                                </button>
+                            {% endwith %}
+                        {% endfor %}
+                    {% endwith %}
+                {% endfor %}
+            </div>
+        </form>
+
+        <div class="nav-links">
+            <a href="{% url 'chess' %}?reset=1">إعادة ترتيب الرقعة</a> |
+            <a href="{% url 'home' %}">العودة للرئيسية</a>
+        </div>
+    </div>
+</body>
+</html>
